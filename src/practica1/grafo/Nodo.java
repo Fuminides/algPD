@@ -74,7 +74,7 @@ public class Nodo <T extends Identificable> {
 	
 	public void copy(Nodo<T> n){
 		id = n.id;
-		producto = n.producto;
+		producto.copy(n.producto);
 		conexiones = new HashMap<>();
 		for(Object id : n.conexiones.keySet()){
 			double numb = n.conexiones.get(id);

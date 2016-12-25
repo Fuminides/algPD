@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 
 import practica1.grafo.Grafo;
+import practica1.grafo.Identificable;
 import practica1.grafo.Nodo;
 import practica1.random.CryptoRandom;
 import practica1.random.SecuredRandom;
@@ -21,7 +22,7 @@ public class Main {
 	private static final int CASO_BASE = 3;
 	
 	public static void main(String[] args) throws Exception {
-		Grafo<Producto> grafo = new Grafo<>();
+		Grafo grafo = new Grafo();
 		ArrayList<Producto> productos = null;
 		String prod = "Productos.txt";
 		
@@ -51,15 +52,15 @@ public class Main {
 			conjuntos_finales = (int) (grafo.size()*1.0 / Math.sqrt(2));
 		}
 		
-		kargerStein(grafo, conjuntos_finales);
+		grafo = kargerStein(grafo, conjuntos_finales);
 		
 		for (int i : grafo.grafo.keySet()){
-			Nodo<Producto> aux = grafo.get(i);
+			Nodo<Identificable> aux = grafo.get(i);
 			System.out.println("Conjunto " + i +":\n\n" + aux.toString() + "\n");
 		}
 	}
 	
-	private static void leerCompras(String string, Grafo<Producto> grafo) throws FileNotFoundException {
+	private static void leerCompras(String string, Grafo grafo) throws FileNotFoundException {
 		Scanner fichero = new Scanner(new File(string));
 		
 		while ( fichero.hasNextLine() ){
@@ -101,7 +102,7 @@ public class Main {
 	}
 	
 	@SuppressWarnings("unused")
-	private static void generarComprasRandom(Grafo<Producto> grafo){
+	private static void generarComprasRandom(Grafo grafo){
 		for ( int i = 0; i < grafo.size(); i++){
 			for ( int z =1 + i; z < grafo.size(); z++){
 				int relacionados = rand() % 2;
@@ -129,13 +130,14 @@ public class Main {
 	/**
 	 * @param grafo
 	 */
-	private static void kargerStein(Grafo<Producto> grafo, int conjuntos_end) {
+	private static Grafo kargerStein(Grafo grafo, int conjuntos_end) {
 		System.out.println("Tama√±o actual: " + grafo.size());
 		if (grafo.size() == 2){
 			System.out.println("Terminado satisfactoriamente");
+			return grafo;
 		}
 		else if (grafo.size() == CASO_BASE){
-			minCutBruteForce(grafo);
+			return minCutBruteForce(grafo);
 		}
 		else {
 			int max = 400;
@@ -153,13 +155,13 @@ public class Main {
 					}
 				}
 			}
-			
-			Grafo<Producto> aux1 = new Grafo<>(), aux2 = new Grafo<>();
+			System.out.println("Vamos a: " + (int) (grafo.size()*1.0/Math.sqrt(2)));
+			Grafo aux1 = new Grafo(), aux2 = new Grafo();
 			aux1.copy(grafo);
 			aux2.copy(grafo);
-			System.out.println("Vamos a: " + (int) (aux1.size()*1.0/Math.sqrt(2)));
-			kargerStein(aux1, (int) (aux1.size()*1.0/Math.sqrt(2)));
-			kargerStein(aux2, (int) (aux2.size()*1.0/Math.sqrt(2)));
+			
+			aux1 = kargerStein(aux1, (int) (aux1.size()*1.0/Math.sqrt(2)));
+			aux2 = kargerStein(aux2, (int) (aux2.size()*1.0/Math.sqrt(2)));
 			
 			if ( evaluate(aux1) <= evaluate(aux2) ){
 				grafo = aux1;
@@ -167,18 +169,21 @@ public class Main {
 			else{
 				grafo = aux2;
 			}
+			
+			System.out.println("TamaÒo final: " + grafo.size());
+			return grafo;
 		}
 	}
 	
-	private static void minCutBruteForce(Grafo<Producto> grafo){
+	private static Grafo minCutBruteForce(Grafo grafo){
 		//(Para numero de nodos = 3)
 		Integer[] nodos = new Integer[grafo.size()];
 		double min = Integer.MAX_VALUE;
-		Grafo<Producto> mejor = null;
+		Grafo mejor = null;
 		
 		grafo.grafo.keySet().toArray(nodos);
 		for(int i = 0; i < nodos.length; i++){
-			Grafo<Producto> aux = new Grafo<Producto>();
+			Grafo aux = new Grafo();
 			aux.copy(grafo);
 			aux.merge(nodos[i], nodos[(i+1)%nodos.length]);
 			if (evaluate(aux) <= min) {
@@ -186,10 +191,10 @@ public class Main {
 			}
 		}
 		
-		grafo = mejor;
+		return mejor;
 	}
 	
-	private static double evaluate(Grafo<Producto> f){
+	private static double evaluate(Grafo f){
 		return 0.0;
 	}
 	

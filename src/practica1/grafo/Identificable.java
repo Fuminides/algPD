@@ -6,4 +6,6 @@ public interface Identificable {
 	
 	void add(Identificable t);
 
+	void copy(Identificable p);
+
 }

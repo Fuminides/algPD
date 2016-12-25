@@ -3,10 +3,11 @@ package practica1.grafo;
 import java.util.HashMap;
 
 import practica1.Main;
+import practica1.Producto;
 
-public class Grafo <T extends Identificable> {
+public class Grafo {
 	
-	public HashMap<Integer, Nodo<T>> grafo;
+	public HashMap<Integer, Nodo<Identificable>> grafo;
 
 	public Grafo() {
 		grafo = new HashMap<>();
@@ -14,17 +15,17 @@ public class Grafo <T extends Identificable> {
 	
 	public int size(){ return grafo.size(); }
 	
-	public void add(Nodo<T> n){
+	public void add(Nodo<Identificable> n){
 		grafo.put(n.getId(), n);
 	}
 	
-	public void add(T n){
-		Nodo<T> nodo = new Nodo<>(n.getId(), n);
+	public void add(Identificable n){
+		Nodo<Identificable> nodo = new Nodo<>(n.getId(), n);
 		
 		add(nodo);
 	}
 	
-	public void remove(Nodo<T> n){
+	public void remove(Nodo<Identificable> n){
 		int[] conexiones = n.getConections();
 		
 		for (int eliminar : conexiones){
@@ -34,7 +35,7 @@ public class Grafo <T extends Identificable> {
 		grafo.remove(n.getId());
 	}
 	
-	public Nodo<T> get(int id){
+	public Nodo<Identificable> get(int id){
 		return grafo.get(id);
 	}
 	
@@ -54,7 +55,7 @@ public class Grafo <T extends Identificable> {
 	}
 	
 	public void merge(int id, int id2){
-		Nodo<T> n1 = grafo.get(id), n2 = grafo.get(id2);
+		Nodo<Identificable> n1 = grafo.get(id), n2 = grafo.get(id2);
 		
 		//n1.merge(n2);
 		for(int conexiones : n2.getConections()){
@@ -72,9 +73,9 @@ public class Grafo <T extends Identificable> {
 		return aux[Math.abs(Main.rand() % grafo.keySet().size())];
 	}
 	
-	public void copy(Grafo<T> f){
+	public void copy(Grafo f){
 		for(Object id : f.grafo.keySet()){
-			Nodo<T> numb = new Nodo<>(0, null);
+			Nodo<Identificable> numb = new Nodo<Identificable>(0, new Producto());
 			numb.copy(f.grafo.get(id));
 			grafo.put((Integer)id, numb);
 		}

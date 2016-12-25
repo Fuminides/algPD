@@ -44,5 +44,20 @@ public class Producto implements Identificable{
 		productosMergeados.add(otro);
 		
 	}
+	
+	@Override
+	public void copy(Identificable ident){
+		Producto p = (Producto) ident;
+		id = p.id;
+		unidades = p.unidades;
+		precio = p.precio;
+		nombre = p.nombre;
+		productosMergeados = new ArrayList<>();
+		
+		for (Identificable producto: p.productosMergeados){
+			productosMergeados.add(producto);
+		}
+		
+	}
 
 }
