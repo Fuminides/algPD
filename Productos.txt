@@ -32,6 +32,6 @@
 31 La_Peste 3 7,95 27 28 29
 32 Super_Mario_Bros 3 19,9 34 35
 33 Unforgiven 2 13,95 34
-34 Nes_Mini 0 79,9 32 34
+34 Nes_Mini 0 79,9 32
 35 Surface_4 150 899,90 32 36 15 17
 36 Teclado 80 100,00 35

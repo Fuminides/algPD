@@ -71,5 +71,15 @@ public class Nodo <T extends Identificable> {
 	public String toString(){
 		return producto.toString();
 	}
+	
+	public void copy(Nodo<T> n){
+		id = n.id;
+		producto = n.producto;
+		conexiones = new HashMap<>();
+		for(Object id : n.conexiones.keySet()){
+			double numb = n.conexiones.get(id);
+			conexiones.put((Integer)id, numb);
+		}
+	}
 
 }

@@ -71,5 +71,13 @@ public class Grafo <T extends Identificable> {
 		
 		return aux[Math.abs(Main.rand() % grafo.keySet().size())];
 	}
+	
+	public void copy(Grafo<T> f){
+		for(Object id : f.grafo.keySet()){
+			Nodo<T> numb = new Nodo<>(0, null);
+			numb.copy(f.grafo.get(id));
+			grafo.put((Integer)id, numb);
+		}
+	}
 
 }
