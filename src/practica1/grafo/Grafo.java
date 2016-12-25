@@ -38,9 +38,14 @@ public class Grafo <T extends Identificable> {
 		return grafo.get(id);
 	}
 	
-	public void addConection(int id, int id2){
-		grafo.get(id).addConection(id2);
-		grafo.get(id2).addConection(id);
+	public boolean addConection(int id, int id2){
+		if (!grafo.get(id).isConnected(id2)){
+			grafo.get(id).addConection(id2);
+			grafo.get(id2).addConection(id);
+			
+			return true;
+		}
+		return false;
 	}
 	
 	public void addConection(int id, int id2, double peso){
@@ -53,7 +58,7 @@ public class Grafo <T extends Identificable> {
 		
 		//n1.merge(n2);
 		for(int conexiones : n2.getConections()){
-			addConection(n1.getId(), conexiones);
+			if (conexiones != id ) addConection(n1.getId(), conexiones);
 		}
 		n1.addInfo(n2);
 		remove(n2);

@@ -23,7 +23,8 @@ public class Main {
 			grafo.add(producto);
 		}
 		
-		generarComprasRandom(grafo);
+		//generarComprasRandom(grafo);
+		leerCompras(args[0], grafo);
 		int max = 400;
 		
 		while ( (grafo.grafo.size() > conjuntos_finales) && max > 0){
@@ -47,6 +48,26 @@ public class Main {
 		}
 	}
 	
+	private static void leerCompras(String string, Grafo<Producto> grafo) throws FileNotFoundException {
+		Scanner fichero = new Scanner(new File(string));
+		
+		while ( fichero.hasNextLine() ){
+			int id = fichero.nextInt();
+			fichero.next();
+			fichero.nextInt();
+			fichero.nextDouble();
+
+			while (fichero.hasNextInt() ){
+				int conect = fichero.nextInt();
+				if (grafo.addConection(id, conect)) System.out.println("Conectamos " + id + " y " + conect);
+			}
+			
+			fichero.nextLine();
+		}
+		
+		fichero.close();
+	}
+
 	private static ArrayList<Producto> leerFicheroProd(String ruta) throws FileNotFoundException{
 		Scanner fichero = new Scanner(new File(ruta));
 		ArrayList<Producto> productos = new ArrayList<>();
@@ -68,6 +89,7 @@ public class Main {
 		return productos;
 	}
 	
+	@SuppressWarnings("unused")
 	private static void generarComprasRandom(Grafo<Producto> grafo){
 		for ( int i = 0; i < grafo.size(); i++){
 			for ( int z =1 + i; z < grafo.size(); z++){
