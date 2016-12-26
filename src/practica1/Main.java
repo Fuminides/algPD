@@ -3,6 +3,7 @@ package practica1;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 
@@ -16,7 +17,7 @@ import practica1.random.VanillaRandom;
 public class Main {
 	
 
-	private static int metodo_aleatorio = 0;
+	private static int metodo_aleatorio = 2;
 	private static int conjuntos_finales = 2;
 	private static boolean stein = true;
 	private static final int CASO_BASE = 3;
@@ -148,7 +149,18 @@ public class Main {
 			while ( (grafo.grafo.size() > conjuntos_end) && max > 0){
 				int nodo1 = grafo.get();
 				if ( grafo.get(nodo1).getConections().length > 0){
-					int nodo2 = grafo.get(nodo1).getConections()[Math.abs(rand()) %  grafo.get(nodo1).getConections().length];
+					int i = 0, j;
+					HashMap<Integer, Double> conexiones = grafo.get(nodo1).getWeights();
+					System.out.println("Con:" + grafo.get(nodo1).getConections().length+ " y " + conexiones.size());
+					ArrayList<Integer> prob = new ArrayList<Integer>();
+					for ( Integer nodoC: conexiones.keySet()){
+						j = i;
+						System.out.println(conexiones.get(nodoC));
+						for( ; i < j + conexiones.get(nodoC); i++){
+							prob.add(nodoC);
+						}
+					}
+					int nodo2 = prob.get(Math.abs(rand()) % prob.size());
 					grafo.merge(nodo1, nodo2);
 					System.out.println("Mergeamos " + nodo1 + " y " + nodo2);
 				}
@@ -199,7 +211,13 @@ public class Main {
 	}
 	
 	private static double evaluate(Grafo f){
-		return 0.0;
+		double pesos = 0.0;
+		for(Integer nodo: f.grafo.keySet()){
+			for(Integer conexion: f.get(nodo).getWeights().keySet()){
+				pesos += f.get(nodo).getWeights().get(conexion);
+			}
+		}
+		return pesos;
 	}
 	
 	

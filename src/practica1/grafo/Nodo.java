@@ -54,6 +54,10 @@ public class Nodo <T extends Identificable> {
 		
 		return nodos;
 	}
+	
+	public HashMap<Integer, Double> getWeights(){
+		return conexiones;
+	}
 
 	public T getProducto() {
 		return producto;
@@ -80,6 +84,10 @@ public class Nodo <T extends Identificable> {
 			double numb = n.conexiones.get(id);
 			conexiones.put((Integer)id, numb);
 		}
+	}
+
+	public double getWeight(int conexiones2) {
+		return conexiones.get(conexiones2);
 	}
 
 }

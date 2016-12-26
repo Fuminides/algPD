@@ -65,7 +65,7 @@ public class Grafo {
 		
 		//n1.merge(n2);
 		for(int conexiones : n2.getConections()){
-			if (conexiones != id ) addConection(n1.getId(), conexiones);
+			if (conexiones != id ) addConection(n1.getId(), conexiones, n2.getWeight(conexiones));
 		}
 		n1.addInfo(n2);
 		remove(n2);
@@ -76,7 +76,7 @@ public class Grafo {
 		
 		aux = grafo.keySet().toArray(aux);
 		
-		return aux[Math.abs(Main.rand() % grafo.keySet().size())];
+		return aux[Math.abs(Main.rand()) % grafo.keySet().size()];
 	}
 	
 	public void copy(Grafo f){
