@@ -2,7 +2,10 @@ package practica1.random;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-
+/**
+ * Clase que utliza una versión un poco mejor de los numeros aleatorios de la biblioteca de criptografia
+ * de Java.
+ */
 public class SecuredRandom {
 
 	private static SecureRandom cl = null;

@@ -1,5 +1,8 @@
 package practica1.random;
 
+/**
+ * Clase para devolver valores aleatorios utilizando el Random por defecto de Java.
+ */
 import java.util.Random;
 
 public class VanillaRandom {

@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 import practica1.grafo.Identificable;
 
+/**
+ * Clase que representa a un producto de Amazon.
+ * 
+ */
 public class Producto implements Identificable{
 
 	int id, unidades;
@@ -21,6 +25,9 @@ public class Producto implements Identificable{
 		productosMergeados = new ArrayList<>();
 	}
 	
+	/**
+	 * Ensenyamos los datos del producto, y de todos los que se han mezclado con el.
+	 */
 	@Override
 	public String toString(){
 		String basic =  

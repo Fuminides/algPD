@@ -1,7 +1,9 @@
 package practica1.random;
 
 import java.security.SecureRandom;
-
+/**
+ * Clase que utiliza un generador de numeros aleatorios mejor que el defecto, pensado para criptografia. 
+ */
 public class CryptoRandom {
 	
 	private static SecureRandom cl = null;
