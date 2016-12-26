@@ -70,10 +70,14 @@ public class Main {
 			fichero.nextDouble();
 
 			while (fichero.hasNextInt() ){
-				int conect = fichero.nextInt();
-				if (grafo.addConection(id, conect)) System.out.println("Conectamos " + id + " y " + conect);
+				int conect = fichero.nextInt(), cantidad = 0;
+				System.out.println(conect + " " + id);
+				if ( conect > id ) {
+					cantidad = fichero.nextInt(); 
+					if (grafo.addConection(id, conect, cantidad)) System.out.println("Conectamos " + id + " y " + conect + " con fuerza: " + cantidad);
+				}
 			}
-			
+			System.out.println("Completado");
 			fichero.nextLine();
 		}
 		

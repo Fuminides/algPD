@@ -49,9 +49,15 @@ public class Grafo {
 		return false;
 	}
 	
-	public void addConection(int id, int id2, double peso){
-		grafo.get(id).addConectionWeight(id2, peso);
-		grafo.get(id2).addConectionWeight(id, peso);
+	public boolean addConection(int id, int id2, double peso){
+		if (!grafo.get(id).isConnected(id2)){
+			grafo.get(id).addConectionWeight(id2, peso);
+			grafo.get(id2).addConectionWeight(id, peso);
+			
+			return true;
+		}
+		
+		return false;
 	}
 	
 	public void merge(int id, int id2){
