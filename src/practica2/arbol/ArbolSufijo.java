@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class ArbolSufijo {
 	
 	private String word;
-	private final String FIN = "$";
+	public final static String FIN = "$";
 	private Celda raiz;
 
 	public ArbolSufijo(String palabra){
@@ -86,6 +86,43 @@ public class ArbolSufijo {
 		}
 		res.add(0, ptr);
 		return res;
+	}
+	
+	public ArrayList<String> buscarCopias() {
+		ArrayList<String> res = new ArrayList<String>();
+		
+		for(Celda hijo:raiz.hijos){
+			for(Celda nieto:hijo.hijos){
+				res.addAll(buscarCopias(nieto, "","",hijo.elemento));
+			}
+		}
+		
+		return res;
+	}
+
+
+	public ArrayList<String> buscarCopias(Celda ptr, String recorrido, String sol, String padre) {
+		if (recorrido.startsWith(sol+ptr.elemento)){
+			sol += ptr.elemento;
+		}
+		else{
+			if ( sol != "") recorrido+=ptr.elemento;
+			else {
+				ArrayList<String> res = new ArrayList<String>();
+				res.add(padre + "/" + sol + "/" + ptr.elemento);
+				return res;
+			}
+		}
+		ArrayList<String> res = new ArrayList<String>();
+
+		if (ptr.hijos.size() > 0){
+			for(Celda hijo: ptr.hijos){
+				res.addAll(buscarCopias(hijo, new String(recorrido), new String(sol),padre));
+			}
+		}
+		
+		return res;
+		
 	}
 
 }
