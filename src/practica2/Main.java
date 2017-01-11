@@ -12,13 +12,28 @@ public class Main{
 	private static final String COM = "$";
 
 	public static void main (String[] args){
-		String palabra = args[0];
-		ArbolSufijo arbol = new ArbolSufijo(palabra);
-		arbol.naiveBuild();
-		arbol.compact();
+		String palabra = args[1];
+		if ( args[0].equals("-r")){
+			ArbolSufijo arbol = new ArbolSufijo(palabra);
+			arbol.naiveBuild();
+			arbol.compact();
+			
+			System.out.println("Repeticion mas larga: " + repeticionLarga(arbol));
+		}
+		else if (args[0].equals("-c")){
+			palabra = COM + palabra + COM;
+			ArbolSufijo arbol = new ArbolSufijo(palabra);
+			arbol.naiveBuild();
+			arbol.compact();
+			System.out.println("Substrings repetidos:");
+			for(String copia : arbol.buscarCopias()){
+				if (copia.length()>1){
+					System.out.println(copia);
+				}
+			}
+		}
 		
-		System.out.println(arbol.toString());
-		System.out.println("Repeticion mas larga: " + repeticionLarga(arbol));
+		
 	}
 	
 	public static String repeticionLarga(ArbolSufijo arbol){		
@@ -28,15 +43,6 @@ public class Main{
 			res+=camino.get(i).elemento;
 		}
 		return res;
-	}
-	
-	public static ArrayList<String> copia(String word, ArbolSufijo arbol){
-		ArrayList<String> resultado = new ArrayList<>()
-				, posibilidades = new ArrayList<>();
-		String anterior, epilogo;
-		
-		
-		return resultado;
 	}
 	
 }

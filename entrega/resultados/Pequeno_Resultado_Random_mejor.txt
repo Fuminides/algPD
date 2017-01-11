@@ -1,0 +1,52 @@
+Conjunto 1:
+
+Id: 5
+Nombre: Papel_higienico
+Precio: 1.2 euros
+Unidades: 220
+
+Conjunto 2:
+
+Id: 6
+Nombre: Desorodorante
+Precio: 4.8 euros
+Unidades: 26
+Id: 1
+Nombre: Jabon
+Precio: 0.8 euros
+Unidades: 989
+Id: 2
+Nombre: Detergente
+Precio: 4.0 euros
+Unidades: 211
+Id: 9
+Nombre: Surface_4
+Precio: 899.9 euros
+Unidades: 150
+Id: 10
+Nombre: Teclado
+Precio: 100.0 euros
+Unidades: 80
+Id: 4
+Nombre: Lavaplatos
+Precio: 6.0 euros
+Unidades: 150
+Id: 3
+Nombre: Cloro
+Precio: 4.9 euros
+Unidades: 23
+Id: 0
+Nombre: Lejia
+Precio: 3.2 euros
+Unidades: 300
+Id: 8
+Nombre: Crema_dental
+Precio: 15.26 euros
+Unidades: 200
+Id: 7
+Nombre: Desinfectante
+Precio: 11.64 euros
+Unidades: 7
+
+Coste del corte: 95.0
+Tiempo de ejecucion: 89 milisegundos.

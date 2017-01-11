@@ -26,7 +26,7 @@ public class SecuredRandom {
 	 * @throws NoSuchAlgorithmException 
 	 */
 	private static void init() throws NoSuchAlgorithmException {
-		cl = SecureRandom.getInstanceStrong();
+		cl = SecureRandom.getInstanceStrong(); //SOLO JAVA 1.8!!
 	}
 
 	public SecuredRandom() {

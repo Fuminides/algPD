@@ -1,0 +1,156 @@
+Conjunto 1:
+
+Id: 20
+Nombre: Genesis:Tresspass
+Precio: 19.99 euros
+Unidades: 8
+Id: 23
+Nombre: Renaissance:Novella
+Precio: 16.95 euros
+Unidades: 1
+Id: 25
+Nombre: King_Crimson:Cirkus
+Precio: 15.99 euros
+Unidades: 1
+Id: 22
+Nombre: Renaissance:Symphony_of_Light
+Precio: 24.95 euros
+Unidades: 2
+Id: 21
+Nombre: Beach_House:Bloom
+Precio: 19.99 euros
+Unidades: 20
+Id: 24
+Nombre: The_Smiths:The_Queen_is_Dead
+Precio: 9.99 euros
+Unidades: 4
+Id: 27
+Nombre: La_Regenta
+Precio: 8.99 euros
+Unidades: 7
+Id: 29
+Nombre: Memorias_de_Adriano
+Precio: 14.95 euros
+Unidades: 8
+Id: 31
+Nombre: La_Peste
+Precio: 7.95 euros
+Unidades: 3
+Id: 26
+Nombre: Peter_Gabriel:So
+Precio: 14.99 euros
+Unidades: 21
+Id: 30
+Nombre: Luces_de_Bohemia
+Precio: 9.95 euros
+Unidades: 8
+Id: 28
+Nombre: Ana_Kareninna
+Precio: 9.95 euros
+Unidades: 2
+Id: 18
+Nombre: Flash
+Precio: 500.99 euros
+Unidades: 8
+Id: 17
+Nombre: Camara_desechable
+Precio: 9.99 euros
+Unidades: 180
+Id: 19
+Nombre: Papel_fotos
+Precio: 3.99 euros
+Unidades: 70
+Id: 33
+Nombre: Unforgiven
+Precio: 13.95 euros
+Unidades: 2
+Id: 34
+Nombre: Nes_Mini
+Precio: 79.9 euros
+Unidades: 0
+Id: 32
+Nombre: Super_Mario_Bros
+Precio: 19.9 euros
+Unidades: 3
+Id: 35
+Nombre: Surface_4
+Precio: 899.9 euros
+Unidades: 150
+Id: 36
+Nombre: Teclado
+Precio: 100.0 euros
+Unidades: 80
+Id: 15
+Nombre: Camara
+Precio: 1299.99 euros
+Unidades: 20
+Id: 16
+Nombre: Carrete
+Precio: 12.9915 euros
+Unidades: 140
+
+Conjunto 2:
+
+Id: 14
+Nombre: Suavizante
+Precio: 6.54 euros
+Unidades: 40
+Id: 2
+Nombre: Detergente
+Precio: 4.0 euros
+Unidades: 211
+Id: 7
+Nombre: Desinfectante
+Precio: 11.64 euros
+Unidades: 7
+Id: 0
+Nombre: Lejia
+Precio: 3.2 euros
+Unidades: 300
+Id: 8
+Nombre: Crema_dental
+Precio: 15.26 euros
+Unidades: 200
+Id: 11
+Nombre: Cera_suelo
+Precio: 12.03 euros
+Unidades: 11
+Id: 4
+Nombre: Lavaplatos
+Precio: 6.0 euros
+Unidades: 150
+Id: 9
+Nombre: Compotas
+Precio: 4.5 euros
+Unidades: 113
+Id: 10
+Nombre: Champu
+Precio: 6.7 euros
+Unidades: 394
+Id: 5
+Nombre: Papel_higienico
+Precio: 1.2 euros
+Unidades: 220
+Id: 13
+Nombre: Toallas
+Precio: 12.95 euros
+Unidades: 41
+Id: 12
+Nombre: Maquina_Afeitar
+Precio: 8.92 euros
+Unidades: 46
+Id: 6
+Nombre: Desorodorante
+Precio: 4.8 euros
+Unidades: 26
+Id: 3
+Nombre: Cloro
+Precio: 4.9 euros
+Unidades: 23
+Id: 1
+Nombre: Jabon
+Precio: 0.8 euros
+Unidades: 989
+
+Coste del corte: 7.0
+Tiempo de ejecucion: 187 milisegundos.

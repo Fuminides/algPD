@@ -1,0 +1,23 @@
+Fumanal Idocin, Javier	javierfumanalidocin@gmail.com	684229
+---------------------------------------------------------------
+
+El programa está hecho en Java. Para ejecutarlo, se puede utilizar el script ejecutar1.sh que compila el programa y crea
+un fichero .jar. Luego, ejecuta cada ejemplo del directorio de pruebas y deja las salidas del programa en tres ficheros en
+la carpeta de resultados.
+
+En caso de querer utilizar el fichero .jar directamente, tiene las siguientes opciones disponibles por linea de comandos:
+
+-> "-s": activa el algoritmo Karger-Stein (Se utiliza Karger por defecto)
+-> "-p " + ruta de fichero: indicamos el fichero de productos que queremos que lea.
+-> "-a " + [0-2]: permite elegir entre distintos generadores de numeros aleatorios.
+		0->Generador estandar de Java.
+		1->Generador de la libreria de criptografía de Java
+		2->Versión más segura del generador de números aleatorios de la misma librería.
+
+Los resultados del programa se muestran por pantalla.
+
+Los ficheros de prueba están hechos a mano, y siguen el siguiente formato:
+<ID único del producto> <Nombre> <Número de unidades disponibles> <Precio> (<ID de producto con el que se ha comprado conjuntamente> <Número de compras conjuntas>)* <"e">
+
+El programa es capaz de deducir información bidireccional, como que las compras conjuntas de un producto con el otro son recíprocas,
+por lo que la información duplicada no se añade a los ficheros de pruebas.

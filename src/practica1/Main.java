@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 
@@ -21,9 +22,10 @@ import practica1.random.VanillaRandom;
 
 public class Main {
 	
-
+    private static long startTime = System.currentTimeMillis();
+    
 	//Metodos aleatorio: 0->Random Java, 1->SecureRandom Java, 2->SecureRandom Java mas fuerte
-	private static int metodo_aleatorio = 2;
+	private static int metodo_aleatorio = 0;
 	private static int conjuntos_finales = 2;
 	
 	//Si utilizamos Karger-Stein (Por defecto no)
@@ -63,12 +65,17 @@ public class Main {
 		}
 		
 		grafo = kargerStein(grafo, conjuntos_finales);
-		
+		int z = 1;
 		for (int i : grafo.grafo.keySet()){
 			Nodo<Identificable> aux = grafo.get(i);
-			System.out.println("Conjunto " + i +":\n\n" + aux.toString() + "\n");
-			System.out.println("Coste del corte: " + evaluate(grafo));
+			System.out.println("Conjunto " + (z++) +":\n\n" + aux.toString() + "\n");
 		}
+		
+		System.out.println("Coste del corte: " + evaluate(grafo));
+		long timeEnd = System.currentTimeMillis();
+        System.out.println("Tiempo de ejecucion: " + (timeEnd - startTime) + " milisegundos.");
+
+
 	}
 	
 	/**
@@ -89,13 +96,12 @@ public class Main {
 
 			while (fichero.hasNextInt() ){
 				int conect = fichero.nextInt(), cantidad = 0;
-				System.out.println(conect + " " + id);
 				if ( conect > id ) {
 					cantidad = fichero.nextInt(); 
-					if (grafo.addConection(id, conect, cantidad)) System.out.println("Conectamos " + id + " y " + conect + " con fuerza: " + cantidad);
+					grafo.addConection(id, conect, cantidad);
+					//if (grafo.addConection(id, conect, cantidad)) System.out.println("Conectamos " + id + " y " + conect + " con fuerza: " + cantidad);
 				}
 			}
-			System.out.println("Cargado el fichero de ventas.");
 			fichero.nextLine();
 		}
 		
@@ -112,40 +118,25 @@ public class Main {
 	private static ArrayList<Producto> leerFicheroProd(String ruta) throws FileNotFoundException{
 		Scanner fichero = new Scanner(new File(ruta));
 		ArrayList<Producto> productos = new ArrayList<>();
-		
-		while ( fichero.hasNextLine() ){
-			int id = fichero.nextInt();
-			String nombre = fichero.next();
-			int unidades = fichero.nextInt();
-			double precio = fichero.nextDouble();
-
-			Producto producto = new Producto(id, unidades, precio, nombre);
-			productos.add(producto);
-			
-			fichero.nextLine();
+		try{
+			while ( fichero.hasNextLine() ){
+				int id = fichero.nextInt();
+				String nombre = fichero.next();
+				int unidades = fichero.nextInt();
+				double precio = fichero.nextDouble();
+	
+				Producto producto = new Producto(id, unidades, precio, nombre);
+				productos.add(producto);
+				
+				fichero.nextLine();
+			}
+		} catch (NoSuchElementException e){
+			;
 		}
 		
 		fichero.close();
 		
 		return productos;
-	}
-	
-	/**
-	 * Crea las compras entre los productos de forma aleatoria.
-	 * @param grafo
-	 */
-	@SuppressWarnings("unused")
-	private static void generarComprasRandom(Grafo grafo){
-		for ( int i = 0; i < grafo.size(); i++){
-			for ( int z =1 + i; z < grafo.size(); z++){
-				int relacionados = rand() % 2;
-				if ( relacionados > 0){
-					grafo.addConection(i, z, relacionados);
-				}
-			}
-		}
-		
-		
 	}
 	
 	/**
@@ -202,24 +193,26 @@ public class Main {
 				else{
 					max--;
 					if ( max == 0){
-						System.out.println("Lo sentimos, no hay suficientes conexiones para hacer el corte.");
+						System.out.println("Lo sentimos, no hay suficientes conexiones para hacer el corte. Quedan " + grafo.size() + " nodos.");
 					}
 				}
 			}
-			//Aplicamos recursivamente el algoritmo en dos copias.
-			Grafo aux1 = new Grafo(), aux2 = new Grafo();
-			aux1.copy(grafo);
-			aux2.copy(grafo);
-			
-			aux1 = kargerStein(aux1, (int) (aux1.size()*1.0/Math.sqrt(2)));
-			aux2 = kargerStein(aux2, (int) (aux2.size()*1.0/Math.sqrt(2)));
-			
-			//Y nos quedamos con la mejor
-			if ( evaluate(aux1) <= evaluate(aux2) ){
-				grafo = aux1;
-			}
-			else{
-				grafo = aux2;
+			if ( conjuntos_end != 2 ){
+				//Aplicamos recursivamente el algoritmo en dos copias.
+				Grafo aux1 = new Grafo(), aux2 = new Grafo();
+				aux1.copy(grafo);
+				aux2.copy(grafo);
+				
+				aux1 = kargerStein(aux1, (int) (aux1.size()*1.0/Math.sqrt(2)));
+				aux2 = kargerStein(aux2, (int) (aux2.size()*1.0/Math.sqrt(2)));
+				
+				//Y nos quedamos con la mejor
+				if ( evaluate(aux1) <= evaluate(aux2) ){
+					grafo = aux1;
+				}
+				else{
+					grafo = aux2;
+				}
 			}
 			
 			return grafo;

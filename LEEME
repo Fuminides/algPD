@@ -1,0 +1,27 @@
+Fumanal Idocin, Javier	javierfumanalidocin@gmail.com	a684229
+---------------------------------------------------------------
+
+El programa está hecho originalmente en Java 1.8.La versión aquí adjuntada está soportada por Java 1.7, pero
+pierde uno de sus generadores aleatorios (más detalles en la memoria). Para ejecutarlo, se puede utilizar 
+el script ejecutar1.sh que compila el programa y crea y ejecuta cada ejemplo del directorio de pruebas con dos generadores
+de números aleatorios distintos y deja las salidas del programa en tres ficheros en la carpeta de resultados.
+
+El fichero .jar adjuntado tiene la versión de Java 1.8, que posee los tres generadores de números aleatorios.
+
+El programa tiene las siguientes opciones disponibles por linea de comandos:
+
+-> "-s": activa el algoritmo Karger-Stein (Se utiliza Karger por defecto)
+-> "-p " + ruta de fichero: indicamos el fichero de productos que queremos que lea.
+-> "-a " + [0-2]: permite elegir entre distintos generadores de numeros aleatorios.
+		0->Generador estandar de Java.
+		1->Generador de la libreria de criptografía de Java
+		2->Versión más segura del generador de números aleatorios de la misma librería. (Sólo disponible en el jar).
+
+Los resultados del programa se muestran por pantalla.
+(Para ver ejemplos de uso, mirar el script ejecutar1.sh)
+
+Los ficheros de prueba están hechos a mano, y siguen el siguiente formato:
+<ID único del producto> <Nombre> <Número de unidades disponibles> <Precio> (<ID de producto con el que se ha comprado conjuntamente> <Número de compras conjuntas>)* <"e">
+
+El programa es capaz de deducir información bidireccional, como que las compras conjuntas de un producto con el otro son recíprocas,
+por lo que la información duplicada no se añade a los ficheros de pruebas.

@@ -24,12 +24,12 @@
 23 Renaissance:Novella 1 16,95 20 22 25 29 e
 24 The_Smiths:The_Queen_is_Dead 4 9,99 21 22 26 98 19 e
 25 King_Crimson:Cirkus 1 15,99 20 23 e
-26 Peter_Gabriel:So 21 14,99 21 24 e
+26 Peter_Gabriel:So 21 14,99 21 24 27 40 e
 27 La_Regenta 7 8,99 28 62 29 33 31 21 15 e
-28 Ana_Kareninna 2 9,95 27 31 35 e
+28 Ana_Kareninna 2 9,95 30 12 31 39 35 2 e
 29 Memorias_de_Adriano 8 14,95 27 31 29 e
-30 Luces_de_Bohemia 8 9,95 27 e
-31 La_Peste 3 7,95 27 28 29 e
+30 Luces_de_Bohemia 8 9,95 e
+31 La_Peste 3 7,95 e
 32 Super_Mario_Bros 3 19,9 34 210 35 199 e
 33 Unforgiven 2 13,95 34 45 e
 34 Nes_Mini 0 79,9 32 e

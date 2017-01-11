@@ -42,7 +42,6 @@ public class ArbolSufijo {
 		if (ptr.hijos.size() != 0){
 			for ( Celda padre:ptr.hijos){
 				while ( padre.hijos.size() == 1){
-					System.out.println("Compactamos");
 					if (padre.hasHijo(FIN)) break;
 					padre.elemento += padre.hijos.get(0).elemento;
 					padre.hijos = padre.hijos.get(0).hijos;
@@ -75,16 +74,30 @@ public class ArbolSufijo {
 	}
 	private ArrayList<Celda> caminoMayorProfundidad(Celda ptr){
 		ArrayList<Celda> res = new ArrayList<>();
-		int max = 0;
-		
-		for(Celda hijo:ptr.hijos){
-			ArrayList<Celda> aux = caminoMayorProfundidad(hijo);
-			if ( aux.size() > max){
-				res = aux;
-				max = aux.size();
+		int max = -1;
+		if ( ptr.hijos.size() > 1){
+			for(Celda hijo:ptr.hijos){
+				ArrayList<Celda> aux = caminoMayorProfundidad(hijo);
+				String acum = hijo.elemento;
+				for(int i = 0; i < aux.size()-2; i++){
+					acum += aux.get(i).elemento;
+				}
+				if ( acum.length() > max){
+					res = aux;
+					max = acum.length();
+				}
+			}
+			String acum = "";
+			for(int i = 0; i < res.size(); i++){
+				acum += res.get(i).elemento;
 			}
 		}
+		else if (ptr.hijos.size() == 1){
+			res = caminoMayorProfundidad(ptr.hijos.get(0));
+		}
+		
 		res.add(0, ptr);
+		
 		return res;
 	}
 	
@@ -100,7 +113,7 @@ public class ArbolSufijo {
 		return res;
 	}
 
-
+	 
 	public ArrayList<String> buscarCopias(Celda ptr, String recorrido, String sol, String padre) {
 		if (recorrido.startsWith(sol+ptr.elemento)){
 			sol += ptr.elemento;

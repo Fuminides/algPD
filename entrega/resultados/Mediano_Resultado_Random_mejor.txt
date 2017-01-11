@@ -1,0 +1,80 @@
+Conjunto 1:
+
+Id: 16
+Nombre: Carrete
+Precio: 12.9915 euros
+Unidades: 140
+Id: 17
+Nombre: Camara_desechable
+Precio: 9.99 euros
+Unidades: 180
+Id: 15
+Nombre: Camara
+Precio: 1299.99 euros
+Unidades: 20
+
+Conjunto 2:
+
+Id: 12
+Nombre: Maquina_Afeitar
+Precio: 8.92 euros
+Unidades: 46
+Id: 1
+Nombre: Jabon
+Precio: 0.8 euros
+Unidades: 989
+Id: 7
+Nombre: Desinfectante
+Precio: 11.64 euros
+Unidades: 7
+Id: 5
+Nombre: Papel_higienico
+Precio: 1.2 euros
+Unidades: 220
+Id: 4
+Nombre: Lavaplatos
+Precio: 6.0 euros
+Unidades: 150
+Id: 11
+Nombre: Cera_suelo
+Precio: 12.03 euros
+Unidades: 11
+Id: 2
+Nombre: Detergente
+Precio: 4.0 euros
+Unidades: 211
+Id: 8
+Nombre: Crema_dental
+Precio: 15.26 euros
+Unidades: 200
+Id: 10
+Nombre: Champu
+Precio: 6.7 euros
+Unidades: 394
+Id: 13
+Nombre: Toallas
+Precio: 12.95 euros
+Unidades: 41
+Id: 6
+Nombre: Desorodorante
+Precio: 4.8 euros
+Unidades: 26
+Id: 9
+Nombre: Compotas
+Precio: 4.5 euros
+Unidades: 113
+Id: 14
+Nombre: Suavizante
+Precio: 6.54 euros
+Unidades: 40
+Id: 0
+Nombre: Lejia
+Precio: 3.2 euros
+Unidades: 300
+Id: 3
+Nombre: Cloro
+Precio: 4.9 euros
+Unidades: 23
+
+Coste del corte: 5.0
+Tiempo de ejecucion: 117 milisegundos.
