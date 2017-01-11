@@ -1,7 +1,11 @@
 package practica2;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
+import java.util.Scanner;
 import java.util.Set;
 
 import practica2.arbol.ArbolSufijo;
@@ -13,6 +17,10 @@ public class Main{
 
 	public static void main (String[] args){
 		String palabra = args[1];
+		File prueba = new File(palabra);
+		if (prueba.exists()){
+			palabra = leerFasta(prueba);
+		}
 		if ( args[0].equals("-r")){
 			ArbolSufijo arbol = new ArbolSufijo(palabra);
 			arbol.naiveBuild();
@@ -21,7 +29,7 @@ public class Main{
 			System.out.println("Repeticion mas larga: " + repeticionLarga(arbol));
 		}
 		else if (args[0].equals("-c")){
-			palabra = COM + palabra + COM;
+			//palabra = COM + palabra + COM;
 			ArbolSufijo arbol = new ArbolSufijo(palabra);
 			arbol.naiveBuild();
 			arbol.compact();
@@ -34,8 +42,84 @@ public class Main{
 		}
 		
 		
+		
+		
 	}
 	
+	/**
+	 * Elige un gen aleatorio del fichero fasta y lo devuelve.
+	 * 
+	 * @param prueba
+	 * @return
+	 */
+	private static String leerFasta(File prueba) {
+		String gen = "";
+		try {
+			ArrayList<Integer> cabeceras = new ArrayList<>();
+			int contador = 1;
+			Scanner leerfichero = new Scanner(prueba);
+			while(leerfichero.hasNextLine()){
+				if (leerfichero.nextLine().startsWith(">")) {
+					cabeceras.add(contador);
+					contador++;
+				}
+			}
+			Random generador = new Random();
+			int genElegido = cabeceras.get(generador.nextInt(cabeceras.size()));
+			contador = 1;
+			leerfichero.close();
+			leerfichero = new Scanner(prueba);
+			System.out.println(cabeceras.get(genElegido));
+			while(contador <= cabeceras.get(genElegido)){
+				leerfichero.nextLine();
+				contador++;
+			}
+			String line = leerfichero.nextLine();
+			while (!line.startsWith(">") ){
+				gen+=line.replaceAll("\n", "");
+				line = leerfichero.nextLine();
+			}
+			leerfichero.close();
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Gen elegido: \n" + gen);
+		return gen;
+	}
+	
+	/**
+	 * Elige un gen aleatorio del fichero fasta y lo devuelve.
+	 * 
+	 * @param prueba
+	 * @return
+	 */
+	private static ArrayList<String> procesarFastaCompleto(File prueba) {
+		ArrayList<String> gen = new ArrayList<>();
+		try {
+			Scanner leerfichero = new Scanner(prueba);
+			while(leerfichero.hasNextLine()){
+				if (leerfichero.nextLine().startsWith(">")) {
+					String line = leerfichero.nextLine();
+					String gento = "";
+					while (!line.startsWith(">") ){
+						gento+=line.replaceAll("\n", "");
+						line = leerfichero.nextLine();
+					}
+					gen.add(gento);
+				}
+			}
+			leerfichero.close();
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Gen elegido: \n" + gen);
+		return gen;
+	}
+
 	public static String repeticionLarga(ArbolSufijo arbol){		
 		ArrayList<Celda> camino = arbol.caminoMayorProfundidad();
 		String res="";

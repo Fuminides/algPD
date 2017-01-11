@@ -72,31 +72,24 @@ public class ArbolSufijo {
 	public ArrayList<Celda> caminoMayorProfundidad(){
 		return caminoMayorProfundidad(raiz);
 	}
+	
 	private ArrayList<Celda> caminoMayorProfundidad(Celda ptr){
 		ArrayList<Celda> res = new ArrayList<>();
 		int max = -1;
-		if ( ptr.hijos.size() > 1){
-			for(Celda hijo:ptr.hijos){
-				ArrayList<Celda> aux = caminoMayorProfundidad(hijo);
-				String acum = hijo.elemento;
-				for(int i = 0; i < aux.size()-2; i++){
-					acum += aux.get(i).elemento;
-				}
-				if ( acum.length() > max){
-					res = aux;
-					max = acum.length();
-				}
-			}
-			String acum = "";
-			for(int i = 0; i < res.size(); i++){
-				acum += res.get(i).elemento;
-			}
-		}
-		else if (ptr.hijos.size() == 1){
-			res = caminoMayorProfundidad(ptr.hijos.get(0));
-		}
 		
-		res.add(0, ptr);
+		res.add(0,ptr);
+
+		for(Celda hijo:ptr.hijos){
+			ArrayList<Celda> aux = caminoMayorProfundidad(hijo);
+			String acum = "";
+			for(int i = 0; i < aux.size()-2; i++){
+				acum += aux.get(i).elemento;
+			}
+			if ( acum.length() > max){
+				res.addAll(aux);
+				max = acum.length();
+			}
+		}
 		
 		return res;
 	}
