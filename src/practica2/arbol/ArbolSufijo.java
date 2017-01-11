@@ -13,6 +13,7 @@ public class ArbolSufijo {
 		raiz = new Celda();
 	}
 	
+	//---------Contruir------------------------------
 	public void naiveBuild(){
 		ArrayList<String> prefijos = new ArrayList<>();
 		
@@ -51,6 +52,8 @@ public class ArbolSufijo {
 		}
 	}
 	
+	//-------------------------------------------------------
+	
 	public ArrayList<String> nodos(){
 		ArrayList<String> resultado = new ArrayList<>();
 		
@@ -69,30 +72,38 @@ public class ArbolSufijo {
 		return res;
 	}
 	
+	//APARTADO 1
+	
 	public ArrayList<Celda> caminoMayorProfundidad(){
 		return caminoMayorProfundidad(raiz);
 	}
 	
 	private ArrayList<Celda> caminoMayorProfundidad(Celda ptr){
-		ArrayList<Celda> res = new ArrayList<>();
+		ArrayList<Celda> res = new ArrayList<>(), better = new ArrayList<>();
 		int max = -1;
 		
-		res.add(0,ptr);
+		res.add(ptr);
 
 		for(Celda hijo:ptr.hijos){
+			
 			ArrayList<Celda> aux = caminoMayorProfundidad(hijo);
 			String acum = "";
 			for(int i = 0; i < aux.size()-2; i++){
 				acum += aux.get(i).elemento;
 			}
 			if ( acum.length() > max){
-				res.addAll(aux);
 				max = acum.length();
+				better = aux;
 			}
 		}
 		
+		res.addAll(better);
+
 		return res;
 	}
+	
+	
+	//APARTADO 2
 	
 	public ArrayList<String> buscarCopias() {
 		ArrayList<String> res = new ArrayList<String>();

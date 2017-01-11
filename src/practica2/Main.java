@@ -53,10 +53,10 @@ public class Main{
 	 * @return
 	 */
 	private static String leerFasta(File prueba) {
-		String gen = "";
+		String gen = "", genescogido = null;
 		try {
 			ArrayList<Integer> cabeceras = new ArrayList<>();
-			int contador = 1;
+			int contador = 0;
 			Scanner leerfichero = new Scanner(prueba);
 			while(leerfichero.hasNextLine()){
 				if (leerfichero.nextLine().startsWith(">")) {
@@ -65,15 +65,16 @@ public class Main{
 				}
 			}
 			Random generador = new Random();
-			int genElegido = cabeceras.get(generador.nextInt(cabeceras.size()));
-			contador = 1;
+			int genElegido = cabeceras.get(Math.abs(generador.nextInt()%(cabeceras.size())));
+			contador = 0;
 			leerfichero.close();
 			leerfichero = new Scanner(prueba);
-			System.out.println(cabeceras.get(genElegido));
-			while(contador <= cabeceras.get(genElegido)){
+			while(contador < cabeceras.get(genElegido)){
 				leerfichero.nextLine();
 				contador++;
 			}
+			genescogido = leerfichero.nextLine();
+			while (!genescogido.startsWith(">")) genescogido = leerfichero.nextLine();
 			String line = leerfichero.nextLine();
 			while (!line.startsWith(">") ){
 				gen+=line.replaceAll("\n", "");
@@ -85,7 +86,7 @@ public class Main{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Gen elegido: \n" + gen);
+		System.out.println("Gen elegido: "+ genescogido +"\n" + gen);
 		return gen;
 	}
 	
@@ -116,7 +117,6 @@ public class Main{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Gen elegido: \n" + gen);
 		return gen;
 	}
 
