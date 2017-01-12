@@ -11,6 +11,7 @@ public class ArbolSufijo {
 	public ArbolSufijo(String palabra){
 		word = palabra;
 		raiz = new Celda();
+		raiz.elemento = "";
 	}
 	
 	//---------Contruir------------------------------
@@ -106,39 +107,76 @@ public class ArbolSufijo {
 	//APARTADO 2
 	
 	public ArrayList<String> buscarCopias() {
-		ArrayList<String> res = new ArrayList<String>();
+		ArrayList<String> cadenasBrutas = buscarCopias(raiz), resultados = new ArrayList<>();
+		String actual = "";
+		ArrayList<ArrayList<String>> matriz = new ArrayList<>();
 		
-		for(Celda hijo:raiz.hijos){
-			for(Celda nieto:hijo.hijos){
-				res.addAll(buscarCopias(nieto, "","",hijo.elemento));
+		for(String cadena:cadenasBrutas){
+			//System.out.println("Cadena bruta: "+ cadena);
+			if ((!cadena.split("/")[0].replaceAll(" ", "").equals(""))&&(cadena.split("/").length == 2)){
+				boolean exito = true;
+				String tratada = cadena.split("/")[0].replaceAll(" ", "");
+				int derecha = Integer.parseInt(cadena.split("/")[1]);
+				int indexFinal, indexInicial;
+				indexFinal = word.length()-derecha; 
+				indexInicial = indexFinal-tratada.length()-1;
+				
+				String prologo; 
+				if ( indexInicial < 0) prologo = FIN;
+				else prologo = word.charAt(indexInicial)+"";
+				String epilogo = word.charAt(indexFinal)+"";
+				//System.out.println("Cadena: " + tratada + " Anterior " + prologo + ", Epilogo: " + epilogo);
+	
+				if (tratada.equals(actual)){
+					for(ArrayList<String> mAux: matriz){
+						if (prologo.equals(mAux.get(0))|epilogo.equals(mAux.get(1))){
+							exito = false;
+						}
+					}
+					if ( exito ){
+						resultados.add(tratada);
+					}
+				}
+				else{
+					matriz.clear();
+					actual = tratada;
+					ArrayList<String> aux = new ArrayList<>();
+					if ( indexInicial >= 0) aux.add(word.charAt(indexInicial)+"");
+					else aux.add(FIN);
+					aux.add(word.charAt(indexFinal)+"");
+					matriz.add(aux);
+				}
 			}
 		}
 		
-		return res;
+		return resultados;
+		
 	}
 
 	 
-	public ArrayList<String> buscarCopias(Celda ptr, String recorrido, String sol, String padre) {
-		if (recorrido.startsWith(sol+ptr.elemento)){
-			sol += ptr.elemento;
-		}
-		else{
-			if ( sol != "") recorrido+=ptr.elemento;
-			else {
-				ArrayList<String> res = new ArrayList<String>();
-				res.add(padre + "/" + sol + "/" + ptr.elemento);
-				return res;
-			}
-		}
-		ArrayList<String> res = new ArrayList<String>();
-
-		if (ptr.hijos.size() > 0){
-			for(Celda hijo: ptr.hijos){
-				res.addAll(buscarCopias(hijo, new String(recorrido), new String(sol),padre));
-			}
-		}
+	public ArrayList<String> buscarCopias(Celda ptr) {
+		ArrayList<String> result = new ArrayList<>();
 		
-		return res;
+		if (ptr.hijos.size() > 1){
+			boolean defecto = true, fin=true;
+			for(Celda hijo: ptr.hijos){
+				ArrayList<String> nietos= buscarCopias(hijo);	
+				for(String nieto : nietos){
+					if ( nieto.split("/").length>1){
+						result.add(ptr.elemento + nieto);
+						defecto = false;
+					}
+				}
+				if(nietos.isEmpty()){ fin = true;}
+			}			
+			if ((fin)|(defecto)) result.add(ptr.elemento);
+		}
+		Integer barras_bajas = 0;
+		for(int i = 0; i < ptr.elemento.length(); i++){
+			barras_bajas += 1;
+		}
+		result.add(" /"+barras_bajas);
+		return result;
 		
 	}
 

@@ -6,10 +6,11 @@ public class Celda {
 
 	public ArrayList<Celda> hijos;
 	public String elemento;
-	public int descendientes=0;
+	public ArrayList<Celda> indices;
 	
 	public Celda(){
 		hijos = new ArrayList<>();
+		indices = new ArrayList<>();
 	}
 	
 	public Celda(String elemento) {

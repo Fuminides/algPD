@@ -3,47 +3,77 @@ package practica2;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.Set;
 
 import practica2.arbol.ArbolSufijo;
 import practica2.arbol.Celda;
 
 public class Main{
 	
-	private static final String COM = "$";
-
 	public static void main (String[] args){
+		ArrayList<String> genes = null; 
+		boolean full_mode = false;
+		for (String arg:args){
+			if (arg.equals("-f")) full_mode = true;
+		}
 		String palabra = args[1];
 		File prueba = new File(palabra);
 		if (prueba.exists()){
-			palabra = leerFasta(prueba);
+			if (!full_mode) palabra = leerFasta(prueba);
+			else genes = procesarFastaCompleto(prueba);
 		}
+		
 		if ( args[0].equals("-r")){
-			ArbolSufijo arbol = new ArbolSufijo(palabra);
-			arbol.naiveBuild();
-			arbol.compact();
 			
-			System.out.println("Repeticion mas larga: " + repeticionLarga(arbol));
-		}
-		else if (args[0].equals("-c")){
-			//palabra = COM + palabra + COM;
-			ArbolSufijo arbol = new ArbolSufijo(palabra);
-			arbol.naiveBuild();
-			arbol.compact();
-			System.out.println("Substrings repetidos:");
-			for(String copia : arbol.buscarCopias()){
-				if (copia.length()>1){
-					System.out.println(copia);
+			
+			if ( !full_mode ) {
+				ArbolSufijo arbol = new ArbolSufijo(palabra);
+				arbol.naiveBuild();
+				arbol.compact();
+				System.out.println("Repeticion mas larga: " + repeticionLarga(arbol));
+			}
+			else{
+				int i = 0;
+				for (String word: genes){
+					ArbolSufijo arbol = new ArbolSufijo(word);
+					arbol.naiveBuild();
+					arbol.compact();
+					System.out.println("Gen " + i + ":");
+					i++;
+					System.out.println("Repeticion mas larga: " + repeticionLarga(arbol));
 				}
 			}
 		}
-		
-		
-		
-		
+		else if (args[0].equals("-c")){
+			if ( !full_mode ){
+				ArbolSufijo arbol = new ArbolSufijo(palabra);
+				arbol.naiveBuild();
+				arbol.compact();
+				System.out.println("Substrings repetidos:");
+				String anterior = "";
+				for(String copia : arbol.buscarCopias()){
+						if ((copia.length()>1)&&(!copia.equals(anterior))) System.out.println(copia);
+						anterior = copia;
+				}
+			}
+			else{
+				int i = 0;
+				for (String word:genes){
+					ArbolSufijo arbol = new ArbolSufijo(word);
+					arbol.naiveBuild();
+					arbol.compact();
+					System.out.println("Substrings repetidos:");
+					String anterior = "";
+					System.out.println("Gen " + i + ":");
+					for(String copia : arbol.buscarCopias()){
+							i++;
+							if ((copia.length()>1)&&(!copia.equals(anterior))) System.out.println(copia);
+							anterior = copia;
+					}
+				}
+			}
+		}
 	}
 	
 	/**
