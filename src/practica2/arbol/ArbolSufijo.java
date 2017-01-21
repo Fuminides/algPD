@@ -11,7 +11,7 @@ public class ArbolSufijo {
 	public ArbolSufijo(String palabra){
 		word = palabra;
 		raiz = new Celda();
-		raiz.elemento = "";
+		raiz.elemento = "*";
 	}
 	
 	//---------Contruir------------------------------
@@ -53,8 +53,126 @@ public class ArbolSufijo {
 		}
 	}
 	
-	//-------------------------------------------------------
+	public void ukkonenBuild(){
+		ArrayList<String> prefijos = new ArrayList<>();
+		
+		for(int i = 1; i <= word.length(); i++){
+			prefijos.add(word.substring(0,i));
+		}
+		for (int i = 0; i < word.length(); i++){
+			for(){
+				if ( prefijos.get(i).length() > 0){
+					System.out.println("Inserto " + prefijos.get(i));
+					ukkonenAux(raiz, prefijos.get(i));
+				}
+			}
+		}
+	}
 	
+	private void ukkonenAux(Celda ptr, String prefijo){
+		String aux = "", nuevoElem = "";
+		
+		for(int i = 0; i < ptr.elemento.length();i++){
+			try{
+				if ( ptr.elemento.charAt(i) == prefijo.charAt(i)){
+					prefijo = prefijo.substring(i+1);
+					nuevoElem = ptr.elemento.substring(i+1);
+					aux += ptr.elemento.charAt(i);
+				}
+				else{
+					break;
+				}
+			} catch (StringIndexOutOfBoundsException e){
+				break;
+			}
+		}
+		if ( ukkonenRegla1(ptr, aux) ){
+			System.out.println("Regla 1 aplicada");
+			ptr.elemento = ptr.elemento + prefijo;
+			return;
+		}
+		else if ( ukkonenRegla2(ptr, aux, prefijo) ){
+			System.out.println("Regla 2 aplicada, anyado " + prefijo);
+			if ( ptr != raiz){
+				Celda nueva = new Celda(nuevoElem);
+				nueva.hijos = ptr.hijos;
+				ptr.hijos = new ArrayList<>();
+				ptr.hijos.add(nueva);
+				ptr.createHijo(prefijo);
+				ptr.elemento = aux;
+			}
+			else{
+				ptr.createHijo(prefijo);
+			}
+			return;
+
+		}
+		else if ( (aux.length() != ptr.elemento.length()) && (prefijo.length()==0) ){
+			System.out.println("Regla 3 aplicada"); //No hacemos nada
+			return;
+		}
+			
+		for ( Celda hijo: ptr.hijos){
+			if ( prefijo.length() > hijo.elemento.length()) {
+				if ( prefijo.startsWith(hijo.elemento) ){
+					ukkonenAux(hijo, prefijo);
+				}
+			}
+			else{
+				if ( hijo.elemento.startsWith(prefijo) ){
+					System.out.println("Ocurre");
+					ukkonenAux(hijo, prefijo);
+				}
+			}
+		}
+		
+	}
+
+	private boolean ukkonenRegla1(Celda ptr, String comun) {
+		if ((ptr.hijos.size() == 0) && (ptr.elemento.length() == comun.length())){
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean ukkonenRegla2(Celda ptr, String aux, String prefijo){
+		for ( Celda hijo: ptr.hijos){
+			if ( prefijo.length() > hijo.elemento.length()) {
+				if ( prefijo.startsWith(hijo.elemento) ){
+					return false;
+				}
+			}
+			else{
+				if ( hijo.elemento.startsWith(prefijo) ){
+					System.out.println("Ocurre");
+					return false;
+				}
+			}
+		}
+		if (aux.length() != ptr.elemento.length() && (prefijo.length()>0)){
+			return true;
+		}
+		return false;
+	}
+	
+	public void explicitar(){
+		explicitar(raiz);
+	}
+	
+	private void explicitar(Celda raiz2) {
+		if ( raiz2.hijos.size() == 0 ){
+			raiz2.createHijo(FIN);
+		}
+		else{
+			for(Celda hijo:raiz2.hijos){
+				explicitar(hijo);
+			}
+		}
+	}
+
+	//-------------------------------------------------------
+
+
 	public ArrayList<String> nodos(){
 		ArrayList<String> resultado = new ArrayList<>();
 		
@@ -178,6 +296,14 @@ public class ArbolSufijo {
 		result.add(" /"+barras_bajas);
 		return result;
 		
+	}
+	
+	public static void main(String[] args){
+		String prueba = "xa";
+		ArbolSufijo arbol = new ArbolSufijo(prueba);
+		arbol.ukkonenBuild();
+		arbol.explicitar();
+		System.out.println(arbol.toString());
 	}
 
 }
