@@ -25,6 +25,8 @@ public class Main{
 		}
 		
 		if ( args[0].equals("-r")){
+			
+			
 			if ( !full_mode ) {
 				ArbolSufijo arbol = new ArbolSufijo(palabra);
 				arbol.naiveBuild();
