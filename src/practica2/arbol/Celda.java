@@ -2,15 +2,19 @@ package practica2.arbol;
 
 import java.util.ArrayList;
 
+/**
+ * Celda que forma parte un arbol de sufijos. Los atributos
+ * son publicos para un manejo más cómodo.
+ * 
+ * @author Javier Fumanal Idocin, 684229
+ */
 public class Celda {
 
 	public ArrayList<Celda> hijos;
 	public String elemento;
-	public ArrayList<Celda> indices;
 	
 	public Celda(){
 		hijos = new ArrayList<>();
-		indices = new ArrayList<>();
 	}
 	
 	public Celda(String elemento) {

@@ -1,47 +1,72 @@
 package practica2;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 import practica2.arbol.ArbolSufijo;
 import practica2.arbol.Celda;
 
+/**
+ * Clase principal de la ejecucion de la practica 2. Permite
+ * buscar copias en documentos fasta o en strings pasados por la entrada
+ * estandar.
+ * 
+ * @author Javier Fumanal Idocin, 684229
+ *
+ */
 public class Main{
 	
+	static boolean full_mode = false;
+	static boolean trivial = false;
+	
 	public static void main (String[] args){
+		long inicio = System.nanoTime(), fin;
 		ArrayList<String> genes = null; 
-		boolean full_mode = false;
+		ArrayList<String> nombres = new ArrayList<>();
 		for (String arg:args){
 			if (arg.equals("-f")) full_mode = true;
+			if (arg.equals("-t")) trivial = true;
 		}
-		String palabra = args[1];
+		String palabra = args[args.length-1];
 		File prueba = new File(palabra);
+		
 		if (prueba.exists()){
-			if (!full_mode) palabra = leerFasta(prueba);
-			else genes = procesarFastaCompleto(prueba);
+			if (!full_mode) palabra = FastaUtils.leerFasta(prueba);
+			else genes = FastaUtils.procesarFastaCompleto(prueba, nombres);
 		}
 		
 		if ( args[0].equals("-r")){
-			
-			
 			if ( !full_mode ) {
-				ArbolSufijo arbol = new ArbolSufijo(palabra);
-				arbol.naiveBuild();
-				arbol.compact();
-				System.out.println("Repeticion mas larga: " + repeticionLarga(arbol));
+				if ( !trivial ){
+					ArbolSufijo arbol = new ArbolSufijo(palabra);
+					arbol.naiveBuild();
+					arbol.compact();
+					System.out.println("Repeticion mas larga: " + repeticionLarga(arbol));
+				}
+				else{
+					System.out.println("Repeticion mas larga: " + repeticionLargaTrivial(palabra));
+				}
 			}
 			else{
 				int i = 0;
 				for (String word: genes){
-					ArbolSufijo arbol = new ArbolSufijo(word);
-					arbol.naiveBuild();
-					arbol.compact();
-					System.out.println("Gen " + i + ":");
+					ArbolSufijo arbol = null;
+					if (!trivial){
+						arbol = new ArbolSufijo(word);
+						arbol.naiveBuild();
+						arbol.compact();
+					}
+					
+					System.out.println(nombres.get(i));
+					System.out.println(word);
 					i++;
-					System.out.println("Repeticion mas larga: " + repeticionLarga(arbol));
+					if ( !trivial ) {
+						System.out.println("Repeticion mas larga: " + repeticionLarga(arbol));
+					}
+					else{
+						System.out.println("Repeticion mas larga: " + repeticionLargaTrivial(palabra));
+					}
 				}
 			}
 		}
@@ -65,7 +90,8 @@ public class Main{
 					arbol.compact();
 					System.out.println("Substrings repetidos:");
 					String anterior = "";
-					System.out.println("Gen " + i + ":");
+					System.out.println(nombres.get(i));
+					System.out.println(word);
 					for(String copia : arbol.buscarCopias()){
 							i++;
 							if ((copia.length()>1)&&(!copia.equals(anterior))) System.out.println(copia);
@@ -74,82 +100,31 @@ public class Main{
 				}
 			}
 		}
+		fin = System.nanoTime();
+		System.out.println("Ejecutado en " + TimeUnit.NANOSECONDS.toMillis(fin-inicio) + " milisegundos");
 	}
 	
-	/**
-	 * Elige un gen aleatorio del fichero fasta y lo devuelve.
-	 * 
-	 * @param prueba
-	 * @return
-	 */
-	private static String leerFasta(File prueba) {
-		String gen = "", genescogido = null;
-		try {
-			ArrayList<Integer> cabeceras = new ArrayList<>();
-			int contador = 0;
-			Scanner leerfichero = new Scanner(prueba);
-			while(leerfichero.hasNextLine()){
-				if (leerfichero.nextLine().startsWith(">")) {
-					cabeceras.add(contador);
-					contador++;
+	private static String repeticionLargaTrivial(String palabra) {
+		String resultado = "";
+		for ( int longitud = 1; longitud <= palabra.length()/2; longitud++){
+			for(int z = 0; z+longitud <= palabra.length(); z++){
+				boolean rep = false;
+				String candidato = palabra.substring(z, z+longitud);
+				for(int x = z+longitud; x+longitud <= palabra.length();x++){
+					if ( candidato.equals(palabra.substring(x,x+longitud))) rep = true;
 				}
+				if (rep && (resultado.length()< candidato.length())) resultado = candidato;
 			}
-			Random generador = new Random();
-			int genElegido = cabeceras.get(Math.abs(generador.nextInt()%(cabeceras.size())));
-			contador = 0;
-			leerfichero.close();
-			leerfichero = new Scanner(prueba);
-			while(contador < cabeceras.get(genElegido)){
-				leerfichero.nextLine();
-				contador++;
-			}
-			genescogido = leerfichero.nextLine();
-			while (!genescogido.startsWith(">")) genescogido = leerfichero.nextLine();
-			String line = leerfichero.nextLine();
-			while (!line.startsWith(">") ){
-				gen+=line.replaceAll("\n", "");
-				line = leerfichero.nextLine();
-			}
-			leerfichero.close();
-
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		System.out.println("Gen elegido: "+ genescogido +"\n" + gen);
-		return gen;
-	}
-	
-	/**
-	 * Elige un gen aleatorio del fichero fasta y lo devuelve.
-	 * 
-	 * @param prueba
-	 * @return
-	 */
-	private static ArrayList<String> procesarFastaCompleto(File prueba) {
-		ArrayList<String> gen = new ArrayList<>();
-		try {
-			Scanner leerfichero = new Scanner(prueba);
-			while(leerfichero.hasNextLine()){
-				if (leerfichero.nextLine().startsWith(">")) {
-					String line = leerfichero.nextLine();
-					String gento = "";
-					while (!line.startsWith(">") ){
-						gento+=line.replaceAll("\n", "");
-						line = leerfichero.nextLine();
-					}
-					gen.add(gento);
-				}
-			}
-			leerfichero.close();
-
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return gen;
+		return resultado;
 	}
 
+	/**
+	 * Devuelve el substring repetido mas largo en una cadena.
+	 * 
+	 * @param arbol Arbol de sufijos.
+	 * @return el substring mas largo repetido.
+	 */
 	public static String repeticionLarga(ArbolSufijo arbol){		
 		ArrayList<Celda> camino = arbol.caminoMayorProfundidad();
 		String res="";

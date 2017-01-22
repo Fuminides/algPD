@@ -1,12 +1,25 @@
 package practica2.arbol;
 
 import java.util.ArrayList;
-
+/**
+ * Clase que representa un arbol de sufijos.Se construyen utilizando el
+ * algoritmo sencillo de coste O(n^2). Permite buscar la copia mas larga
+ * y todas las copias presentes en el arbol.
+ * 
+ * @author Javier Fumanal Idocin, 684229
+ *
+ */
 public class ArbolSufijo {
 	
 	private String word;
-	public final static String FIN = "$";
 	private Celda raiz;
+	
+	public final static String FIN = "$";
+	public final static int PROLOGO = 0;
+	public final static int EPILOGO = 1;
+	public final static int CADENA = 2;
+	
+
 
 	public ArbolSufijo(String palabra){
 		word = palabra;
@@ -15,6 +28,9 @@ public class ArbolSufijo {
 	}
 	
 	//---------Contruir------------------------------
+	/**
+	 * Construye el arbol de sufijos utilizando el algoritmo basico.
+	 */
 	public void naiveBuild(){
 		ArrayList<String> prefijos = new ArrayList<>();
 		
@@ -36,10 +52,16 @@ public class ArbolSufijo {
 		}
 	}
 	
+	/**
+	 * Reduce el tamanyo del arbol.
+	 */
 	public void compact(){
 		compact(raiz);
 	}
-	
+	/**
+	 * Reduce el tamano del arbol a partir del nodo dado, usandolo como raiz.
+	 * @param ptr raiz del arbol a reducir.
+	 */
 	private void compact(Celda ptr){
 		if (ptr.hijos.size() != 0){
 			for ( Celda padre:ptr.hijos){
@@ -55,6 +77,11 @@ public class ArbolSufijo {
 	
 	//-------------------------------------------------------
 	
+	//------------------MISC-----------------
+	/**
+	 * Devuelve un listado con todos los elementos del arbol.
+	 * @return
+	 */
 	public ArrayList<String> nodos(){
 		ArrayList<String> resultado = new ArrayList<>();
 		
@@ -73,12 +100,25 @@ public class ArbolSufijo {
 		return res;
 	}
 	
+	//--------------------------------------------
 	//APARTADO 1
-	
+	//-------------------------------------------
+	/**
+	 * Devuelve el camino de mayor profundidad del arbol.
+	 * Camino mas largo = Duplicado mas largo en la cadena.
+	 * 
+	 * @return una lista con los nodos ordenados en orden.
+	 */
 	public ArrayList<Celda> caminoMayorProfundidad(){
 		return caminoMayorProfundidad(raiz);
 	}
 	
+	/**
+	 * Devuelve el camino mas largo a partir del nodo dado.
+	 * 
+	 * @param ptr nodo origen del camino.
+	 * @return lista de nodos ordenados con el camiano.
+	 */
 	private ArrayList<Celda> caminoMayorProfundidad(Celda ptr){
 		ArrayList<Celda> res = new ArrayList<>(), better = new ArrayList<>();
 		int max = -1;
@@ -104,56 +144,80 @@ public class ArbolSufijo {
 	}
 	
 	
+	//--------------------------------------------
 	//APARTADO 2
+	//--------------------------------------------
 	
+	/**
+	 * Devuelve todos las copias maximales aparecidas en el String ordenados segun aparicion.
+	 * 
+	 * @return Devuelve una lista con los duplicados.
+	 */
 	public ArrayList<String> buscarCopias() {
 		ArrayList<String> cadenasBrutas = buscarCopias(raiz), resultados = new ArrayList<>();
-		String actual = "";
 		ArrayList<ArrayList<String>> matriz = new ArrayList<>();
-		
+		for(String a:cadenasBrutas) System.out.println(a);
 		for(String cadena:cadenasBrutas){
-			//System.out.println("Cadena bruta: "+ cadena);
-			if ((!cadena.split("/")[0].replaceAll(" ", "").equals(""))&&(cadena.split("/").length == 2)){
-				boolean exito = true;
-				String tratada = cadena.split("/")[0].replaceAll(" ", "");
-				int derecha = Integer.parseInt(cadena.split("/")[1]);
-				int indexFinal, indexInicial;
-				indexFinal = word.length()-derecha; 
-				indexInicial = indexFinal-tratada.length()-1;
-				
-				String prologo; 
-				if ( indexInicial < 0) prologo = FIN;
-				else prologo = word.charAt(indexInicial)+"";
-				String epilogo = word.charAt(indexFinal)+"";
-				//System.out.println("Cadena: " + tratada + " Anterior " + prologo + ", Epilogo: " + epilogo);
-	
-				if (tratada.equals(actual)){
-					for(ArrayList<String> mAux: matriz){
-						if (prologo.equals(mAux.get(0))|epilogo.equals(mAux.get(1))){
-							exito = false;
-						}
-					}
-					if ( exito ){
-						resultados.add(tratada);
-					}
-				}
-				else{
-					matriz.clear();
-					actual = tratada;
+			if ( cadena.split("/")[0].replaceAll(" ", "").length() > 1){
+				if ((!cadena.split("/")[0].replaceAll(" ", "").equals(""))&&(cadena.split("/").length == 2)){
+					String tratada = cadena.split("/")[0].replaceAll(" ", "");
+					int derecha = Integer.parseInt(cadena.split("/")[1]);
+					int indexFinal, indexInicial;
+					indexFinal = word.length()-derecha; 
+					indexInicial = indexFinal-tratada.length();
+					
+					String prologo, epilogo; 
+					if ( indexInicial == 0) prologo = FIN;
+					else prologo = word.charAt(indexInicial-1)+"";
+					if ( indexFinal >= word.length()-1 ) epilogo = FIN; 
+					else epilogo = word.charAt(indexFinal)+"";
 					ArrayList<String> aux = new ArrayList<>();
-					if ( indexInicial >= 0) aux.add(word.charAt(indexInicial)+"");
-					else aux.add(FIN);
-					aux.add(word.charAt(indexFinal)+"");
+					aux.add(prologo); aux.add(epilogo); aux.add(tratada);
+					System.out.println("Prologo: " + prologo + " Epilogo: " + epilogo + " Cadena: " + tratada + " Posicion: " + indexInicial + " Final: " + indexFinal);
 					matriz.add(aux);
 				}
 			}
 		}
 		
-		return resultados;
+		for(ArrayList<String> candidato: matriz){
+			boolean exito = true;
+			for(ArrayList<String> test: matriz){
+				if ( test.get(CADENA).contains(candidato.get(CADENA)) && (!test.get(CADENA).equals(candidato.get(CADENA)))){
+					int index = test.get(CADENA).indexOf(candidato.get(CADENA));
+					if ( candidato.get(CADENA).equals("bc")) System.out.println(index);
+					if (index==0){
+						if (test.get(PROLOGO).equals(candidato.get(PROLOGO))
+								&& (candidato.get(EPILOGO).equals(test.get(CADENA).charAt(index+candidato.get(CADENA).length())))) exito = false;
+					}
+					else if (index+candidato.get(CADENA).length() == test.get(CADENA).length()){
+						if ( candidato.get(CADENA).equals("bc")) System.out.println("Ep: " + candidato.get(EPILOGO));
+						if (test.get(EPILOGO).equals(candidato.get(EPILOGO))
+								&& (candidato.get(PROLOGO).equals(test.get(CADENA).charAt(index-1)+""))) exito = false;
+					}
+					else{
+						exito = false;
+					}
+				}
+				
+			}
+			if ( exito ){
+				resultados.add(candidato.get(CADENA));
+			}
+		}
 		
+		return resultados;
 	}
+		
+	
+		
 
-	 
+	/**
+	 * Devuelve los duplicados en un arbor a partir de un nodo dado.
+	 * (No distingue entre maximales y no).
+	 * 
+	 * @param ptr origen de la busqueda.
+	 * @return devuelve la copia
+	 */
 	public ArrayList<String> buscarCopias(Celda ptr) {
 		ArrayList<String> result = new ArrayList<>();
 		
@@ -171,11 +235,13 @@ public class ArbolSufijo {
 			}			
 			if ((fin)|(defecto)) result.add(ptr.elemento);
 		}
-		Integer barras_bajas = 0;
+		
+		/*Integer barras_bajas = 0;
 		for(int i = 0; i < ptr.elemento.length(); i++){
 			barras_bajas += 1;
-		}
-		result.add(" /"+barras_bajas);
+		}*/
+		if (!ptr.elemento.equals(FIN)) result.add(" /"+ptr.elemento.length());
+		else result.add(" /0");
 		return result;
 		
 	}
